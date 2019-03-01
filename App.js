@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
+import { StyleSheet,FlatList } from 'react-native';
 import { Content, Container, Header, Text, Item, Icon, Input, Button, Card, CardItem, Body } from 'native-base';
-import { AppLoading, Font } from 'expo';
+import { AppLoading, Font, Constants } from 'expo';
+import { Platform } from "expo-core";
 
 const API_KEY = '8c49b7bcabc24d79b9c170756192702';
 
@@ -58,17 +59,23 @@ export default class App extends Component {
     }
     return (
       <Container style={{backgroundColor: '#8EA8C3'}}>
-        <Header searchBar rounded>
-          <Item>
+        <Header searchBar rounded style={styles.androidHeader}>
+          <Item style={{flex:5}}>
             <Icon name="ios-search" />
-            <Input  placeholder="City name" onChangeText={inputValue => this.setState({ searchValue: inputValue })}/>
-           <Button transparent onPress={this.searchCityWeather}>
+            <Input placeholder="City name" onChangeText={inputValue => this.setState({ searchValue: inputValue })}/>
+          </Item>
+          <Button style={{flex:3}} transparent onPress={this.searchCityWeather}>
             <Text>Search</Text>
           </Button>
-          </Item>
-        </Header>
+          </Header>
         <FlatList data={this.state.items}  keyExtractor={(item, index) => index.toString()} renderItem={this.renderItem} />
       </Container>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  androidHeader: {
+   marginTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight
+   }
+});
